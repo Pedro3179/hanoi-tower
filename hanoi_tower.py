@@ -1,5 +1,10 @@
 # Remember to consider edge cases and check if the input is an integer
 # Remove var step
+
+# Calculate max number of moves to solve the challenge
+def calculate_steps(number):
+    return 2**number-1
+
 def find_cursor(arr: list):
     count = len(arr)
     return count / 2
@@ -23,10 +28,10 @@ def find_target_rod_pos(current_rod_pos, cursor):
 
     else:
         if cursor % 2 == 0:
-            pos = 1
+            pos = 0
 
         else:
-            pos = 0
+            pos = 1
 
     return pos
 
@@ -50,9 +55,13 @@ step=1
 
 # Divide and revert sort the array
 def reverse_sort(array, tower, position_map, cursor=1):
-    
+    cursor += 1
+
+    target_number_rod_pos = position_map.get(array[0])
+    target_rod = find_target_rod_pos(target_number_rod_pos, cursor)
+
     if len(array) == 1:
-        cursor += 1
+        #cursor += 1
         print(f'cursor: {cursor}')
         
         disk = array[0]
@@ -63,8 +72,6 @@ def reverse_sort(array, tower, position_map, cursor=1):
 
         current_rod = tower[disk_pos]
 
-        target_rod = find_target_rod_pos(disk_pos, cursor)
-
         print(f"Target rod: {target_rod}")
 
         tower[target_rod].append(disk)
@@ -72,7 +79,7 @@ def reverse_sort(array, tower, position_map, cursor=1):
 
         tower[disk_pos].remove(disk)
         global step
-        print(f"Step {step} - Tower after movement: {tower}")
+        print(f"# Step {step} - Tower after movement: {tower}")
         step+=1
 
         position_map[disk] = target_rod  # Records the change in the position map
@@ -83,40 +90,41 @@ def reverse_sort(array, tower, position_map, cursor=1):
     target_number = array[0]  # Take the disk to be moved
     rest = array[1:]  # take the rest to be sorted
 
-    cursor += 1
-    print(cursor)
+    #cursor += 1
+    print(f'Outside loop cursor:{cursor}')
 
     # Divide the the array until it is one number and sort
-    reverse_sort(
+    reverse_sort(                           
         rest, tower, position_map, cursor
-    )  # Subdivide until there is only one disk
+    ) 
 
-    target_number_rod_pos = position_map.get(target_number)
-    target_rod = find_target_rod_pos(target_number_rod_pos, cursor)
+    print(f'\nArray: {array}')
 
+
+    # Loop through the array
     for disk in array:
+        print(f'\nArray: {array}')
         disk_pos = position_map.get(disk)
 
         print(f"\nDisk: {disk}")
-        print(cursor)
 
         print(f"Target rod index: {target_rod}")
+        print(f'Inside loop cursor:{cursor}')
 
         current_rod = tower[disk_pos]
         current_last_disk = min(current_rod)
 
         # If the disk is not the last item, subdivide again
         if current_last_disk != disk:
-            rest = current_rod[1:]
+            disk_pos_current_rod=current_rod.index(disk)
+            rest = current_rod[disk_pos_current_rod+1:]
 
-            print(f'cursor: {cursor}')
+            print(f'cursor in the loop: {cursor}')
 
             reverse_sort(
                 rest, tower, position_map, cursor
-            )  # Subdivide until there is only one disk
-
-            print(f'cursor: {cursor}')
-
+                )  # Subdivide until there is only one disk
+            print(f'\nArray: {array}')
         if disk == target_number:
             if disk_pos == target_rod:
                 continue
@@ -127,7 +135,7 @@ def reverse_sort(array, tower, position_map, cursor=1):
             print(f"Disk position in the map before: {disk_pos}")
 
             tower[disk_pos].remove(disk)
-            print(f"Step {step} - Resulting tower: {tower}")
+            print(f"# Step {step} - Resulting tower: {tower}")
             step+=1
 
             position_map[disk] = target_rod  # Records the change in the position map
@@ -144,7 +152,7 @@ def reverse_sort(array, tower, position_map, cursor=1):
             print(f"Disk position in the map before: {disk_pos}")
 
             tower[disk_pos].remove(disk)
-            print(f"Step {step} - Resulting tower: {tower}")
+            print(f"# Step {step} - Resulting tower: {tower}")
             step+=1
 
             position_map[disk] = target_rod  # Records the change in the position map
@@ -162,7 +170,7 @@ def reverse_sort(array, tower, position_map, cursor=1):
             print(f"Disk position in the map before: {disk_pos}")
 
             tower[disk_pos].remove(disk)
-            print(f"Step {step} - Resulting tower: {tower}")
+            print(f"# Step {step} - Resulting tower: {tower}")
             step+=1
 
             position_map[disk] = target_rod  # Records the change in the position map
@@ -197,5 +205,8 @@ def hanoi_solver(total_disks):
 
     print(position_map)
 
+n=5
+hanoi_solver(n)
 
-hanoi_solver(5)
+max_steps=calculate_steps(n)
+print(max_steps)
