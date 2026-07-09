@@ -15,19 +15,13 @@ def find_target_rod_pos(current_rod_pos, previous_target):
 
         return pos
 
-def is_reverse_sorted(arr, number):
-    return len(arr) == number - 1
+# Check whether array is reverse sorted:
+def is_reverse_sorted(arr):
+    if not arr: return True
 
+    if len(arr) == 1: return True
 
-def rod_pos(number, tower: list[list]):
-    pos = 0
-    for rod in tower:
-        try:
-            rod.index(number)
-            return pos
-        except:
-            pos += 1
-
+    return arr == sorted(arr, reverse=True)
 
 ### MAIN ###
 step=1
@@ -179,6 +173,7 @@ def hanoi_solver(total_disks):
     indent = "    "
 
     reverse_sort(first_rod, hanoi_tower, position_map)
+    print(f'Array is reverse sorted: {is_reverse_sorted(hanoi_tower[2])}')
 
 n=5
 hanoi_solver(n)
