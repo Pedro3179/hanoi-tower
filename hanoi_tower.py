@@ -1,3 +1,19 @@
+'''
+Solve the mathematical puzzle known as the Tower of Hanoi. The puzzle consists of three rods
+and a number of disks of different diameters.
+
+The puzzle starts with the disks piled up on the first rod, in decreasing size,
+with the smallest disk on top and the largest disk on the bottom.
+
+The goal of the Tower of Hanoi puzzle is moving all the disks to the last rod. To do that,
+you must follow three simple rules:
+
+1. You can move only top-most disks.
+2. You can move only one disk at a time.
+3. You cannot place larger disks on top of smaller ones.
+'''
+
+
 # Calculate the maximum number of moves
 def calculate_steps(number):
     if not isinstance(number, int):
